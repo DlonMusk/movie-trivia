@@ -4,6 +4,8 @@ import { FaUserCog } from 'react-icons/fa'
 import { BiMoviePlay, BiLogOut } from 'react-icons/bi'
 import { MdOutlineDarkMode } from 'react-icons/md'
 import { AnimatePresence, motion } from 'framer-motion'
+import { signOut } from 'firebase/auth'
+import { auth } from '../firebase'
 
 function Nav() {
 
@@ -33,6 +35,7 @@ function Nav() {
                             <button
                                 exit={{ opacity: 0 }}
                                 className='flex w-36 h-14 items-center justify-between text-white p-2 hover:bg-lightgreen focus:border focus:border-black'
+                                onClick={() => auth.signOut()}
                             >
                                 Sign Out
                                 <BiLogOut className='text-white ml-4 h-6 w-6' />

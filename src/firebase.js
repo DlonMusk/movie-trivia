@@ -1,19 +1,19 @@
-import firebase from 'firebase/compat/app';
-import 'firebase/compat/auth';
-import 'firebase/compat/firestore'
+import { initializeApp } from "firebase/app";
+import { getFirestore } from "firebase/firestore";
+import { getAuth } from "firebase/auth";
 
 const firebaseConfig = {
-    apiKey: "AIzaSyDUthu9Dafdl_kO39eeXSX3joKaY0vgKW0",
-    authDomain: "netflix-clone-8dfa6.firebaseapp.com",
-    projectId: "netflix-clone-8dfa6",
-    storageBucket: "netflix-clone-8dfa6.appspot.com",
-    messagingSenderId: "113807289376",
-    appId: "1:113807289376:web:02d093510a9df01da2a045"
+    apiKey: "AIzaSyCZegh_DU0SmEois5D42_P8EjGX5J-n80Y",
+    authDomain: "movie-trivia-ed581.firebaseapp.com",
+    projectId: "movie-trivia-ed581",
+    storageBucket: "movie-trivia-ed581.appspot.com",
+    messagingSenderId: "920806916791",
+    appId: "1:920806916791:web:e10ea91e9cb2d8a8a48332"
 };
 
 
-const firebaseApp = firebase.initializeApp(firebaseConfig);
-const db = firebaseApp.firestore();
-const auth = firebase.auth();
+const app = initializeApp(firebaseConfig)
+const db = getFirestore(app)
+const auth = getAuth(app);
 
 export { auth, db };
