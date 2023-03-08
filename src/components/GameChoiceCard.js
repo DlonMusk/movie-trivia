@@ -1,19 +1,19 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
 
-function GameChoiceCard({ props }) {
-    const { id, type, img, highScore } = props
+function GameChoiceCard({props}) {
+    console.log(props)
+    const { id, type, img, highScore } = props.game
+
 
     const navigate = useNavigate()
 
-    
- 
 
     return (
         <div
             key={id}
             className='relative flex flex-col items-center text-center h-auto m-10 rounded-xl bg-lightgreen shadow-sm opacity-70 hover:opacity-100 hover:shadow-2xl hover:scale-105'
-            onClick={() => navigate(`/${type}`)}
+            onClick={() => navigate(`/${type.split(' ').join('')}`)}
         >
             <h1 className='absolute top-5 md:top-10'>Guess Against {type}</h1>
             <div className='rounded-xl'>

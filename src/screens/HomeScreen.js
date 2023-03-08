@@ -9,7 +9,7 @@ import Nav from '../components/Nav'
 import axios from '../dataLayer/axios'
 import requests from '../dataLayer/requests'
 import GameChoiceCard from '../components/GameChoiceCard'
-import { collection, addDoc } from "firebase/firestore"; 
+import { collection, addDoc, getDocs } from "firebase/firestore"; 
 import { useSelector } from 'react-redux'
 import { selectHighScoreRating, selectHighScoreRevenue, selectHighScoreRunTime, selectUser } from '../dataLayer/slices/userSlice'
 
@@ -23,6 +23,9 @@ function HomeScreen() {
     const revenueHighScore = useSelector(selectHighScoreRevenue)
     const ratingHighScore = useSelector(selectHighScoreRating)
     const runTimeHighScore = useSelector(selectHighScoreRunTime)
+    
+
+    
 
     const games = [
         {
@@ -80,6 +83,8 @@ function HomeScreen() {
         
     // }, [])
 
+    
+
 
 
 
@@ -91,7 +96,7 @@ function HomeScreen() {
             {/* Game choice Cards */}
             <div className='flex-1 flex flex-col items-center 2xl:flex-row 2xl:justify-center bg-[#d2e8ea]'>
                 {games.map(game => (
-                    <GameChoiceCard props={game} key={game.id} />
+                    <GameChoiceCard props={{game}} key={game.id} />
                 ))}
 
             </div>

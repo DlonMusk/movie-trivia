@@ -6,19 +6,22 @@ import { MdOutlineDarkMode } from 'react-icons/md'
 import { AnimatePresence, motion } from 'framer-motion'
 import { signOut } from 'firebase/auth'
 import { auth } from '../firebase'
+import { useNavigate } from 'react-router-dom'
 
 function Nav() {
 
     const [options, setOptions] = useState(false)
 
+    const navigate = useNavigate()
+
 
     return (
-        <div className='sticky z-[10] top-0 w-screen bg-green dark:bg-lightgreen py-5'>
+        <div className='absolute z-[10] top-0 w-screen bg-green dark:bg-lightgreen py-5'>
             <div className='flex relative justify-between items-center max-w-[100rem] mx-5 md:mx-auto'>
-                <div className='flex space-x-3 items-center'>
+                <button onClick={() => navigate('/')} className='flex space-x-3 items-center'>
                     <BiMoviePlay className='h-8 w-8' />
-                    <h1 className=' font-extrabold'>Movie Vs Trivia</h1>
-                </div>
+                    <h1  className=' font-extrabold'>Movie Vs Trivia</h1>
+                </button>
                 <button
                     className='font-semibold flex items-center space-x-3'
                     onClick={() => setOptions(!options)}

@@ -62,7 +62,9 @@ function App() {
         ) :
           <Routes>
             {/* add paths for each game with approriate props to the gameScreen component */}
-            <Route path='/game' element={<GameScreen />} />
+            <Route path='/Rating' element={<GameScreen props={'rating'}/>} />
+            <Route path='/RunTime' element={<GameScreen props={'runtime'}/>} />
+            <Route path='/Revenue' element={<GameScreen props={'revenue'}/>} />
             <Route path='/' element={<HomeScreen />} />
           </Routes>
         }
