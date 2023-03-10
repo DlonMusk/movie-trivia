@@ -1,13 +1,15 @@
-import { collection, orderBy, query } from 'firebase/firestore'
+import { collection, doc, orderBy, query, updateDoc } from 'firebase/firestore'
 import React, { useEffect, useRef, useState } from 'react'
-import { useSelector } from 'react-redux'
-import { selectHighScoreRating, selectHighScoreRevenue, selectHighScoreRunTime, selectUser } from '../dataLayer/slices/userSlice'
+import { useDispatch, useSelector } from 'react-redux'
+import { selectHighScoreRating, selectHighScoreRevenue, selectHighScoreRunTime, setHighScoreRevenue, setHighScoreRating, setHighScoreRunTime, selectUser } from '../dataLayer/slices/userSlice'
 import { db } from '../firebase'
 import { useCollection, useCollectionOnce } from "react-firebase-hooks/firestore"
 import { AnimatePresence, motion } from 'framer-motion'
 import Nav from '../components/Nav'
 
 function GameScreen({ props }) {
+
+    const dispatch = useDispatch()
 
     // get data based on props
     const user = useSelector(selectUser)
@@ -17,14 +19,16 @@ function GameScreen({ props }) {
     const highScoreRevenue = useSelector(selectHighScoreRevenue)
 
 
-    console.log(props)
+    //console.log(props)
 
 
     const [idx, setIdx] = useState(0)
     const [highScore, setHighScore] = useState(0)
     const [movieData, setMovieData] = useState(null)
 
-    const [data, _, x] = useCollectionOnce(query(collection(db, 'movies'), orderBy('rating')))
+    const [data] = useCollectionOnce(query(collection(db, 'movies'), orderBy('rating')))
+
+    const userDoc = doc(db, 'users', user.uid)
 
 
 
@@ -59,18 +63,28 @@ function GameScreen({ props }) {
 
     const maxIdx = movieData?.length - 2
 
-    console.log(highScore)
+    
 
-    const setNewHighScore = () => {
+    const setNewHighScore = async (newIdx) => {
+        console.log('setNewHit', newIdx)
         if (props === 'revenue') {
-            if(idx > highScore){
-                
-            }
+            await updateDoc(userDoc, {
+                highScoreRevenue: newIdx
+            })
+            dispatch(setHighScoreRevenue(newIdx))
+            
         } else if (props === 'rating') {
-            setHighScore(highScoreRating)
+            await updateDoc(userDoc, {
+                highScoreRating: newIdx
+            })
+            dispatch(setHighScoreRating(newIdx))
+
         } else {
-            console.log("working")
-            setHighScore(highScoreRunTime)
+            await updateDoc(userDoc, {
+                highScoreRunTime: newIdx
+            })
+            dispatch(setHighScoreRunTime(newIdx))
+ 
         }
     }
 
@@ -83,12 +97,21 @@ function GameScreen({ props }) {
 
         }
         else if (movieData[idx + 1]?.[props] > movieData[idx]?.[props]) {
+            if(idx > highScore){
+                console.log('HighScore Loss: ', idx)
+                setNewHighScore(idx)
+            }
             setGameStatus(false)
-            setIdx(0)
         } else {
             const newIdx = idx === maxIdx ? 0 : idx + 1
             console.log(idx)
             setIdx(newIdx)
+            if(newIdx > highScore){
+                console.log('HighScore win: ', newIdx)
+                setNewHighScore(newIdx)
+                setHighScore(newIdx)
+                console.log("NEW HIGH SCORE: ", highScore)
+            }
         }
     }
 
@@ -97,13 +120,25 @@ function GameScreen({ props }) {
         if (idx === maxIdx) {
             // BEAT THE GAME
         }
+        // Loss
         else if (movieData[idx + 1]?.[props] < movieData[idx]?.[props]) {
+            if(idx > highScore){
+                console.log('HighScore Loss: ', idx)
+                setNewHighScore(idx)
+            }
             setGameStatus(false)
-            setIdx(0)
         } else {
             const newIdx = idx === maxIdx ? 0 : idx + 1
-            console.log(idx + 1)
+            console.log(idx)
             setIdx(newIdx)
+            
+
+            if(newIdx > highScore){
+                console.log('HighScore win: ', newIdx)
+                setNewHighScore(newIdx)
+                setHighScore(newIdx)
+                console.log("NEW HIGH SCORE: ", highScore)
+            }
         }
     }
 
@@ -121,7 +156,9 @@ function GameScreen({ props }) {
             // animate={{y: animateDistance}}
             // transition={{duration: 5}}
             className='relative flex flex-col justify-evenly items-center overflow-hidden h-screen '>
-            <Nav />
+            <div className='absolute top-0'>
+                <Nav />
+            </div>
             {gameStatus && movieData && (
                 <>
                     <div className='flex flex-col items-center h-[300px] w-screen '>
@@ -131,8 +168,9 @@ function GameScreen({ props }) {
                     </div>
 
 
-                    <div className='absolute flex justify-center items-center w-4/5 h-[3px] bg-white'>
+                    <div className='absolute flex flex-col justify-center items-center w-4/5 h-[3px] bg-white'>
                         <h3 className='uppercase'>{props} VS</h3>
+                        <h6>Score: {idx} | highScore: {highScore}</h6>
                     </div>
 
 

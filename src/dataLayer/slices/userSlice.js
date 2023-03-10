@@ -15,6 +15,15 @@ export const userSlice = createSlice({
         logout: (state, _) => {
             state.user = null
         },
+        setHighScoreRevenue: (state, action) => {
+            state.highScoreRevenue = action.payload
+        },
+        setHighScoreRating: (state, action) => {
+            state.highScoreRating = action.payload
+        },
+        setHighScoreRunTime: (state, action) => {
+            state.highScoreRunTime = action.payload
+        },
         setHighScores: (state, action) => {
             state.highScoreRevenue = action.payload.highScoreRevenue
             state.highScoreRating = action.payload.highScoreRating
@@ -25,7 +34,7 @@ export const userSlice = createSlice({
 })
 
 
-export const { login, logout, setHighScores } = userSlice.actions
+export const { login, logout, setHighScoreRevenue, setHighScoreRating, setHighScoreRunTime, setHighScores } = userSlice.actions
 
 export const selectUser = state => state.user.user
 export const selectHighScoreRevenue = state => state.user.highScoreRevenue

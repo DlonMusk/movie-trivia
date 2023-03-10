@@ -11,7 +11,7 @@ import { collection, doc, getDoc, query, where } from "firebase/firestore";
 
 function App() {
 
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
 
   const user = useSelector(selectUser)
 

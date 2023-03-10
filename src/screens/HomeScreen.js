@@ -23,6 +23,8 @@ function HomeScreen() {
     const revenueHighScore = useSelector(selectHighScoreRevenue)
     const ratingHighScore = useSelector(selectHighScoreRating)
     const runTimeHighScore = useSelector(selectHighScoreRunTime)
+
+    console.log("revenue high score: ", revenueHighScore)
     
 
     

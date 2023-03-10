@@ -1,12 +1,11 @@
 import React, { useState } from 'react'
-import { useSelector } from 'react-redux'
 import { FaUserCog } from 'react-icons/fa'
 import { BiMoviePlay, BiLogOut } from 'react-icons/bi'
 import { MdOutlineDarkMode } from 'react-icons/md'
 import { AnimatePresence, motion } from 'framer-motion'
-import { signOut } from 'firebase/auth'
 import { auth } from '../firebase'
 import { useNavigate } from 'react-router-dom'
+import { logout } from '../dataLayer/slices/userSlice'
 
 function Nav() {
 
@@ -16,7 +15,7 @@ function Nav() {
 
 
     return (
-        <div className='absolute z-[10] top-0 w-screen bg-green dark:bg-lightgreen py-5'>
+        <div className='sticky z-[10] top-0 w-screen bg-green dark:bg-lightgreen py-5'>
             <div className='flex relative justify-between items-center max-w-[100rem] mx-5 md:mx-auto'>
                 <button onClick={() => navigate('/')} className='flex space-x-3 items-center'>
                     <BiMoviePlay className='h-8 w-8' />
@@ -38,7 +37,10 @@ function Nav() {
                             <button
                                 exit={{ opacity: 0 }}
                                 className='flex w-36 h-14 items-center justify-between text-white p-2 hover:bg-lightgreen focus:border focus:border-black'
-                                onClick={() => auth.signOut()}
+                                onClick={() => {
+                                    logout()
+                                    auth.signOut()
+                                }}
                             >
                                 Sign Out
                                 <BiLogOut className='text-white ml-4 h-6 w-6' />
