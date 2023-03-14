@@ -18,21 +18,17 @@ function LeaderboardScreen() {
             return maxB - maxA;
         }))
     }, [data])
-
-    console.log(userScores)
     
-    
-
     
 
   return (
     <div className='flex flex-col h-screen items-center bg-black'>
         <Nav />
         <h1 className='uppercase text-white mt-10 text-[25px] tracking-[5px]'>Leaderboard</h1>
-        <div className='overflow-y-scroll flex justify-center h-auto w-[20rem] mt-5'>
+        <div className='overflow-y-scroll flex justify-center h-auto w-[20rem] mt-5 scrollbar-none'>
             <ul>
                 {userScores?.map((user, idx) => (
-                    <div className='flex flex-col space-3 m-5 text-white font-mono tracking-[3px]'>
+                    <div key={idx} className='flex flex-col space-3 m-5 text-white font-mono tracking-[3px]'>
                         <h1 className='mb-2 border-b-white border-b-2'>#{idx + 1} {user.username}</h1>
                         <p>Rating: {user.highScoreRating}</p>
                         <p>Revenue: {user.highScoreRevenue}</p>

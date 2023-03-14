@@ -12,14 +12,22 @@ function LoginScreen() {
 
   const [signUp, setSignUp] = useState(false)
 
+  const handleRegisterScreen = (e) => {
+    e.preventDefault()
+
+    setSignUp(true)
+  }
+
 
   const register = (e) => {
     e.preventDefault()
     const username = usernameRef.current.value
+    if(username === ''){
+      alert('You must pick a username')
+      return
+    }
     createUserWithEmailAndPassword(auth, emailRef.current.value, passwordRef.current.value)
       .then(authUser => {
-        console.log("User Created", authUser)
-        console.log(username)
         // create user collection with users by id, set all highscores to 0
         setDoc(doc(db, 'users', authUser.user.uid), {
           username: username,
@@ -56,13 +64,15 @@ function LoginScreen() {
         <form className=' h-max flex flex-col justify-between space-y-5'>
 
           <div className='space-y-3 flex flex-col'>
-            <input ref={usernameRef} placeholder="Username" className='bg-black p-3 caret-gray-400 focus:outline-none' type='text'/>
+            {signUp && <input ref={usernameRef} placeholder="Username" className='bg-black p-3 caret-gray-400 focus:outline-none' type='text'/>}
             <input ref={emailRef} placeholder="Email" className='bg-black p-3 caret-green focus:outline-none autofill:bg-black' type='email'/>
             <input ref={passwordRef} placeholder="Password" className='bg-black p-3 caret-gray-400 focus:outline-none' type='password'/>
             <button className='bg-[#202124] p-3 rounded-md hover:text-green hover:shadow-md hover:shadow-green' onClick={signIn}>Sign In</button>
           </div>
 
-          <button className='bg-[#202124] p-3 rounded-md hover:text-green hover:shadow-md hover:shadow-green' onClick={register}>Click Here To Register</button>
+          {signUp ? <button className='bg-[#202124] p-3 rounded-md hover:text-green hover:shadow-md hover:shadow-green' onClick={register}>Register</button>
+                  : <button className='bg-[#202124] p-3 rounded-md hover:text-green hover:shadow-md hover:shadow-green' onClick={handleRegisterScreen}>Click Here To Register</button>
+          }
 
         </form>
         <p className='text-sm text-center mt-2'>only input username if you are signing up</p>

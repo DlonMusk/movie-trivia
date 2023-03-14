@@ -13,8 +13,6 @@ function GameScreen({ props }) {
     const dispatch = useDispatch()
     const navigate = useNavigate()
 
-    console.log(props)
-
     // get data based on props
     const user = useSelector(selectUser)
     const username = useSelector(selectUsername)
@@ -22,10 +20,6 @@ function GameScreen({ props }) {
     const highScoreRating = useSelector(selectHighScoreRating)
     const highScoreRunTime = useSelector(selectHighScoreRunTime)
     const highScoreRevenue = useSelector(selectHighScoreRevenue)
-
-
-    //console.log(props)
-
 
     const [idx, setIdx] = useState(0)
     const [highScore, setHighScore] = useState(0)
@@ -39,14 +33,10 @@ function GameScreen({ props }) {
 
     const handleResetState = () => {
         setIdx(0)
-        setHighScore(0)
         setGameStatus(true)
         setDisplayNewHighScore(false)
         movieData.sort(() => Math.random() - 0.5)
     }
-
-
-
 
 
     useEffect(() => {
@@ -63,22 +53,11 @@ function GameScreen({ props }) {
     }, [data])
 
 
-
-
-
-
-
-
-
-
-
-
     const maxIdx = movieData?.length - 2
 
 
 
     const setNewHighScore = async (newIdx) => {
-        console.log('setNewHit', newIdx)
         setDisplayNewHighScore(true)
         if (props === 'revenue') {
             await updateDoc(userDoc, {
@@ -111,19 +90,15 @@ function GameScreen({ props }) {
         }
         else if (movieData[idx + 1]?.[props] > movieData[idx]?.[props]) {
             if (idx > highScore) {
-                console.log('HighScore Loss: ', idx)
                 setNewHighScore(idx)
             }
             setGameStatus(false)
         } else {
             const newIdx = idx === maxIdx ? 0 : idx + 1
-            console.log(idx)
             setIdx(newIdx)
             if (newIdx > highScore) {
-                console.log('HighScore win: ', newIdx)
                 setNewHighScore(newIdx)
                 setHighScore(newIdx)
-                console.log("NEW HIGH SCORE: ", highScore)
             }
         }
     }
@@ -136,38 +111,28 @@ function GameScreen({ props }) {
         // Loss
         else if (movieData[idx + 1]?.[props] < movieData[idx]?.[props]) {
             if (idx > highScore) {
-                console.log('HighScore Loss: ', idx)
                 setNewHighScore(idx)
             }
             setGameStatus(false)
         } else {
             const newIdx = idx === maxIdx ? 0 : idx + 1
-            console.log(idx)
             setIdx(newIdx)
-
-
             if (newIdx > highScore) {
-                console.log('HighScore win: ', newIdx)
                 setNewHighScore(newIdx)
                 setHighScore(newIdx)
-                console.log("NEW HIGH SCORE: ", highScore)
             }
         }
     }
 
 
-
-
-
     const base_url = 'https://image.tmdb.org/t/p/original';
-    const screenSize = window.screen.width
 
 
     // add a array have the click add to that array have the array render data
     return (
-        <div>
+        <div className='overflow-hidden'>
             {gameStatus && movieData ? (
-                <div className='relative flex flex-col items-center lg:justify-center h-screen font-mono overflow-hidden '>
+                <div className='relative flex flex-col items-center lg:justify-center h-screen font-mono '>
 
                     <div className='flex flex-col  items-center xl:mt-10 xl:space-y-5'>
                         <div className='flex flex-col items-center justify-center mb-2 h-[275px] w-screen space-y-1 xl:space-y-4 text-[#ffffff40]'>
