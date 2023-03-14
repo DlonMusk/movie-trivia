@@ -132,7 +132,7 @@ function GameScreen({ props }) {
     return (
         <div className='overflow-hidden'>
             {gameStatus && movieData ? (
-                <div className='relative flex flex-col items-center lg:justify-center h-screen font-mono '>
+                <div className='relative flex flex-col items-center lg:justify-center h-[90vh] font-mono overflow-hidden mt-5 sm:h-screen'>
 
                     <div className='flex flex-col  items-center xl:mt-10 xl:space-y-5'>
                         <div className='flex flex-col items-center justify-center mb-2 h-[275px] w-screen space-y-1 xl:space-y-4 text-[#ffffff40]'>
