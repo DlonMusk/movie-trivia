@@ -96,7 +96,7 @@ function HomeScreen() {
         >
             <Nav />
             {/* Game choice Cards */}
-            <div className='flex-1 flex flex-col items-center 2xl:flex-row 2xl:justify-center bg-[#d2e8ea]'>
+            <div className='flex-1 flex flex-col items-center 2xl:flex-row 2xl:justify-center bg-[#202124]'>
                 {games.map(game => (
                     <GameChoiceCard props={{game}} key={game.id} />
                 ))}

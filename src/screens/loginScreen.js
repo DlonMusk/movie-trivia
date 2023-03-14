@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React, { useRef, useState } from 'react'
 import FightingPopcorn from '../assets/FightingPopcorn.png'
 import { auth, db } from '../firebase'
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth'
@@ -8,15 +8,21 @@ function LoginScreen() {
 
   const emailRef = useRef(null)
   const passwordRef = useRef(null)
+  const usernameRef = useRef(null)
+
+  const [signUp, setSignUp] = useState(false)
 
 
   const register = (e) => {
     e.preventDefault()
+    const username = usernameRef.current.value
     createUserWithEmailAndPassword(auth, emailRef.current.value, passwordRef.current.value)
       .then(authUser => {
-        console.log(authUser)
+        console.log("User Created", authUser)
+        console.log(username)
         // create user collection with users by id, set all highscores to 0
         setDoc(doc(db, 'users', authUser.user.uid), {
+          username: username,
           highScoreRevenue: 0,
           highScoreRating: 0,
           highScoreRunTime: 0
@@ -41,31 +47,25 @@ function LoginScreen() {
 
 
   return (
-    <div className='h-screen flex justify-center items-center bg-[#c2ecf3]'>
+    <div className='h-screen flex flex-col justify-center items-center bg-[#202124]'>
 
-      <div className='absolute top-0 flex items-center justify-center'>
+      <h1 className='text-[30px] lg:text-[50px] lg:text-gray-500 mb-5 text-shadow-lg'>MOVIE <span className='text-[40px] text-green lg:text-[70px]'>VS</span> TRIVA</h1>
 
-        <img src={FightingPopcorn} className=" object-cover object-top sm:h-[300px] w-screen" />
-        <h1 className="absolute bottom-5 font-mono text-xl">MOVIE VS TRIVIA</h1>
+      <div className='p-5 sm:p-8 rounded-xl bg-black border-2 border-[#7d7d7d] text-gray-500 h-[25rem] w-[18rem] sm:h-[26rem] sm:w-[20rem] shadow-xl shadow-green'>
 
-      </div>
-
-      <div className='mt-40 p-5 sm:p-8 rounded-xl bg-[#51bcffc5] shadow-xl border border-[#7d7d7d] h-[20rem] w-[16rem] sm:h-[22rem] sm:w-[20rem]'>
-
-        <form className=' h-max flex flex-col justify-between space-y-10'>
+        <form className=' h-max flex flex-col justify-between space-y-5'>
 
           <div className='space-y-3 flex flex-col'>
-
-            <input ref={emailRef} placeholder="Email" className='bg-[#d2e8ea] p-3 rounded-md' type='email'/>
-            <input ref={passwordRef} placeholder="Password" className='bg-[#d2e8ea] p-3 rounded-md' type='password'/>
-            <button className='bg-[#d2e8ea] p-3 rounded-md focus:bg-[#79ff74]' onClick={signIn}>Sign In</button>
-
+            <input ref={usernameRef} placeholder="Username" className='bg-black p-3 caret-gray-400 focus:outline-none' type='text'/>
+            <input ref={emailRef} placeholder="Email" className='bg-black p-3 caret-green focus:outline-none autofill:bg-black' type='email'/>
+            <input ref={passwordRef} placeholder="Password" className='bg-black p-3 caret-gray-400 focus:outline-none' type='password'/>
+            <button className='bg-[#202124] p-3 rounded-md hover:text-green hover:shadow-md hover:shadow-green' onClick={signIn}>Sign In</button>
           </div>
 
-          <button className='bg-[#d2e8ea] p-3 rounded-md focus:bg-[#79ff74]' onClick={register}>Click Here To Register</button>
+          <button className='bg-[#202124] p-3 rounded-md hover:text-green hover:shadow-md hover:shadow-green' onClick={register}>Click Here To Register</button>
 
         </form>
-
+        <p className='text-sm text-center mt-2'>only input username if you are signing up</p>
       </div>
 
     </div>

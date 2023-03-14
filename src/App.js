@@ -3,10 +3,11 @@ import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import { auth, db } from "./firebase";
 import HomeScreen from "./screens/HomeScreen";
 import LoginScreen from "./screens/LoginScreen";
-import { login, logout, selectHighScoreRevenue, selectUser, setHighScores } from './dataLayer/slices/userSlice'
+import { login, logout, selectHighScoreRevenue, selectUser, setUserData } from './dataLayer/slices/userSlice'
 import { useEffect } from "react";
 import GameScreen from "./screens/GameScreen";
 import { collection, doc, getDoc, query, where } from "firebase/firestore";
+import LeaderboardScreen from "./screens/LeaderboardScreen";
 
 
 function App() {
@@ -27,11 +28,12 @@ function App() {
         getDoc(doc(db, "users", userAuth.uid)).then(doc => {
           if(doc.exists){
             // console.log("doc: ", doc.data().highScoreRating)
-            const scores = doc.data()
-            dispatch(setHighScores({
-              highScoreRevenue: scores.highScoreRevenue,
-              highScoreRating: scores.highScoreRating,
-              highScoreRunTime: scores.highScoreRunTime
+            const userData = doc.data()
+            dispatch(setUserData({
+              username: userData.username,
+              highScoreRevenue: userData.highScoreRevenue,
+              highScoreRating: userData.highScoreRating,
+              highScoreRunTime: userData.highScoreRunTime
             }))
           }
           else {
@@ -50,21 +52,19 @@ function App() {
   }, [dispatch])
 
 
-  const highScoreRevenue = useSelector(selectHighScoreRevenue)
-  console.log("HIGHSCORE REVENUE: ", highScoreRevenue)
-  console.log("user", user)
 
   return (
-    <div className=" bg-[#d2e8ea]">
+    <div className=" bg-[#202124] font-mono">
       <Router>
         {!user ? (
           <LoginScreen />
         ) :
           <Routes>
             {/* add paths for each game with approriate props to the gameScreen component */}
-            <Route path='/Rating' element={<GameScreen props={'rating'}/>} />
-            <Route path='/RunTime' element={<GameScreen props={'runtime'}/>} />
-            <Route path='/Revenue' element={<GameScreen props={'revenue'}/>} />
+            <Route path='/rating' element={<GameScreen props={'rating'}/>} />
+            <Route path='/runTime' element={<GameScreen props={'runtime'}/>} />
+            <Route path='/revenue' element={<GameScreen props={'revenue'}/>} />
+            <Route path='/leaderboard' element={<LeaderboardScreen />} />
             <Route path='/' element={<HomeScreen />} />
           </Routes>
         }
@@ -74,3 +74,18 @@ function App() {
 }
 
 export default App;
+
+
+
+
+
+
+
+
+
+
+
+/* 
+  TODO:
+  Add leaderboard
+*/

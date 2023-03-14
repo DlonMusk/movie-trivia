@@ -8,7 +8,8 @@ module.exports = {
         orange: '#ffb28a',
         yellow: '#ffcb9f',
         soft: '#ede5d3',
-        lightgreen: '#94c794'
+        lightgreen: '#94c794',
+        ultrablue: '#006eff'
       }
     },
   },
