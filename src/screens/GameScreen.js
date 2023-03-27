@@ -1,11 +1,9 @@
 import { collection, doc, orderBy, query, updateDoc } from 'firebase/firestore'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { selectHighScoreRating, selectHighScoreRevenue, selectHighScoreRunTime, setHighScoreRevenue, setHighScoreRating, setHighScoreRunTime, selectUser, selectUsername } from '../dataLayer/slices/userSlice'
 import { db } from '../firebase'
-import { useCollection, useCollectionOnce } from "react-firebase-hooks/firestore"
-import { AnimatePresence, motion } from 'framer-motion'
-import Nav from '../components/Nav'
+import { useCollectionOnce } from "react-firebase-hooks/firestore"
 import { useNavigate } from 'react-router-dom'
 
 function GameScreen({ props }) {
@@ -127,47 +125,51 @@ function GameScreen({ props }) {
 
     const base_url = 'https://image.tmdb.org/t/p/original';
 
+    const innerHeight = window.innerHeight
+
+    console.log(innerHeight)
+
 
     // add a array have the click add to that array have the array render data
     return (
-        <div className='overflow-hidden'>
+        <div className='overflow-hidden h-screen-ios sm:h-screen'>
             {gameStatus && movieData ? (
-                <div className='relative flex flex-col items-center lg:justify-center h-[90vh] font-mono overflow-hidden mt-5 sm:h-screen'>
+                <div className='relative flex flex-col items-center sm:justify-center font-mono mt-5 sm:h-screen'>
 
-                    <div className='flex flex-col  items-center xl:mt-10 xl:space-y-5'>
-                        <div className='flex flex-col items-center justify-center mb-2 h-[275px] w-screen space-y-1 xl:space-y-4 text-[#ffffff40]'>
-                            <img className='h-3/5 w-4/5 sm:w-[400px] sm:h-[400px] object-fit rounded-xl shadow-xl shadow-[#000]' src={`${movieData[idx]?.backdrop_path ? base_url + movieData[idx]?.backdrop_path : base_url + movieData[idx]?.poster_path}`} alt='poster' />
-                            <h1 className='w-3/4 text-center text-[18px]'>{movieData[idx]?.title}</h1>
-                            <p className='text-[20px]'>{`${props === 'rating' ? `${movieData[idx]?.[props]}/10` : props === 'revenue' ? `${movieData[idx]?.[props].toLocaleString('en-US', {
+                    <div className='flex flex-col items-center sm:items-between sm:mt-10 sm:space-y-[20px]'>
+                        <div className='flex flex-col items-center justify-center mb-2 sm:mb-5 h-[275px] w-screen text-[#ffffff40]'>
+                            <img className='h-[180px] w-[300px] sm:w-[400px] sm:h-[400px] object-fit rounded-xl shadow-xl shadow-[#000]' src={`${movieData[idx]?.backdrop_path ? base_url + movieData[idx]?.backdrop_path : base_url + movieData[idx]?.poster_path}`} alt='poster' />
+                            <h1 className='w-3/4 text-center text-[18px] sm:text-[30px] text-lighttext mt-5'>{movieData[idx]?.title}</h1>
+                            <p className='text-[20px] sm:text-[28px] text-lighttext'>{`${props === 'rating' ? `${movieData[idx]?.[props]}/10` : props === 'revenue' ? `${movieData[idx]?.[props].toLocaleString('en-US', {
                                 style: 'currency',
                                 currency: 'USD',
                                 minimumFractionDigits: 0
                             })} USD` : props === 'runtime' ? `${Math.floor(movieData[idx]?.[props] / 60)}H ${movieData[idx]?.[props] % 60}M` : ''}`}</p>
                         </div>
 
-                        <div className='flex flex-col text-center justify-center items-center w-4/5 max-w-3xl h-auto bg-[#ffffff1d] rounded-lg shadow-lg shadow-green'>
-                            <h3 className='uppercase tracking-[5px] text-lg tex'>{props} VS</h3>
-                            <h6>Score: {idx} | HighScore: {highScore}</h6>
+                        <div className='flex flex-col text-center justify-center items-center w-4/5 max-w-3xl sm:h-[85px] bg-[#ffffff1d] rounded-lg shadow-lg shadow-green'>
+                            <h3 className='uppercase tracking-[5px] text-lg sm:text-[35px] text-lighttext'>{props} <span className='text-green'>VS</span></h3>
+                            <h6 className='sm:text-2xl sm:mt-2 text-green'>Score: {idx} | HighScore: {highScore}</h6>
                         </div>
 
 
                         <div className='flex flex-col items-center justify-center mb-5 h-[275px] w-screen space-y-3 text-[#ffffff40]'>
-                            <h1 className='w-3/4 text-center text-[18px]'>{movieData[idx + 1]?.title}</h1>
+                            <h1 className='w-3/4 text-center text-[18px] sm:text-[30px] text-lighttext'>{movieData[idx + 1]?.title}</h1>
                             {/* <p>{movieData[idx + 1]?.[props]}</p> */}
-                            <img className='h-3/5 w-4/5 sm:w-[400px] sm:h-[400px] object-fit rounded-xl shadow-xl shadow-[#000]' src={`${base_url}${movieData[idx + 1]?.backdrop_path ? base_url + movieData[idx + 1]?.backdrop_path : base_url + movieData[idx + 1]?.poster_path}`} alt='poster' />
+                            <img className='h-[180px] w-[300px] sm:w-[400px] sm:h-[400px] object-fit rounded-xl shadow-xl shadow-[#000]' src={`${base_url}${movieData[idx + 1]?.backdrop_path ? base_url + movieData[idx + 1]?.backdrop_path : base_url + movieData[idx + 1]?.poster_path}`} alt='poster' />
                         </div>
                     </div>
-                    <div className='flex space-x-5 w-3/4 justify-center xl:mt-10'>
-                        <button className='p-3 bg-[#ffffff1d] w-[150px] rounded-lg hover:shadow-lg hover:shadow-green hover:text-green' onClick={handleLowerClick}>Lower</button>
-                        <button className='p-3 bg-[#ffffff1d] w-[150px] rounded-lg hover:shadow-lg hover:shadow-green hover:text-green' onClick={handleHigherClick}>Higher</button>
+                    <div className='flex space-x-5 w-3/4 justify-center sm:mt-[30px]'>
+                        <button className='p-3 bg-[#ffffff1d] w-[150px] sm:w-[200px] sm:text-2xl rounded-lg hover:shadow-lg hover:shadow-green hover:text-green' onClick={handleLowerClick}>Lower</button>
+                        <button className='p-3 bg-[#ffffff1d] w-[150px] sm:w-[200px] sm:text-2xl rounded-lg hover:shadow-lg hover:shadow-green hover:text-green' onClick={handleHigherClick}>Higher</button>
                     </div>
                 </div>
             ) : (
-                <div className='relative flex flex-col items-center justify-center h-screen font-mono '>
+                <div className='relative flex flex-col items-center justify-center h-screen font-mono text-lighttext'>
                     <div className='text-[30px] text-center'>
                         {displayNewHighScore && (
                             <div className='mb-5'>
-                                <h1>Congrats {username}, You Achieved a New HighScore of</h1>
+                                <h1 className=''>Congrats {username}, You Achieved a New HighScore of</h1>
                                 <h1 className='text-[50px] text-green'>{highScore}</h1>
                             </div>
                         )}

@@ -5,12 +5,15 @@ module.exports = {
     extend: {
       colors: {
         green: '#4dab6e',
-        orange: '#ffb28a',
+        lighttext: '#87888A',
         yellow: '#ffcb9f',
         soft: '#ede5d3',
         lightgreen: '#94c794',
         ultrablue: '#006eff'
-      }
+      },
+      height: {
+        'screen-ios': '-webkit-fill-available',
+      },
     },
   },
   plugins: [require('tailwind-scrollbar')],
